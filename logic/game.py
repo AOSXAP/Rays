@@ -4,15 +4,15 @@ from logic.structure import Map
 import math
 
 class Game():
-    def __init__(self, px:int, py:int) -> None:
+    def __init__(self, px:int, py:int,rays:int,lockedRegion:int) -> None:
         self.__win = GraphWin("Rays", px, py)
         self.__map = Map(self.__win,px,py)
         self.player = Player()
 
-        self.__map.buildRandomMap(20)
+        self.__map.buildRandomMap(lockedRegion)
 
-        for k in range(20):
-            self.player.addRay(2*k*math.pi/80-math.pi/4,500)
+        for k in range(rays):
+            self.player.addRay(k*math.pi/(2*rays)-math.pi/4,500)
 
 
     def getKey(self):
@@ -55,7 +55,16 @@ class Game():
             new_radius = ray.getRadius()
             
             for zone in self.__map.lockedZones:
-                normalizedRadius = ray.resizeRay(zone,self.player)
+                normalizedRadius = new_radius
+
+                if self.player.getDir() == 1 and self.player.getX() < zone[1].getX():
+                    normalizedRadius = ray.resizeRay(zone,self.player)
+                if self.player.getDir() == 2 and self.player.getY() < zone[1].getY():
+                    normalizedRadius = ray.resizeRay(zone,self.player)
+                if self.player.getDir() == 3 and self.player.getX() > zone[0].getX():
+                    normalizedRadius = ray.resizeRay(zone,self.player)
+                if self.player.getDir() == 4 and self.player.getY() > zone[0].getY():
+                    normalizedRadius = ray.resizeRay(zone,self.player)
                 new_radius = min(normalizedRadius,new_radius)
 
             completeRay = ray.completeRay(self.player,new_radius)

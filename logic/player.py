@@ -52,24 +52,6 @@ class Player:
         ray = Ray(theta,radius)
         self.__rays.append(ray)
 
-    def completeRay(self,ray,radius,dir):
-        theta = ray.getTheta()
-
-        if dir == 2:
-            theta += math.pi/2
-        if dir == 3:
-            theta += math.pi
-        if dir == 4:
-            theta -= math.pi/2
-
-        x = radius * math.cos(theta)
-        y = radius * math.sin(theta)
-
-        aLine = Line(self.coords(),Point(self.__x+x,self.__y+y))
-        aLine.setFill("green")
-
-        return aLine
-    
     def intersects(self,zone):
         for i in [-1,1]:
             for j in [-1,1]:

@@ -50,7 +50,7 @@ class Map:
             x = random.randint(50, self.__px)
             y = random.randint(50, self.__py)
 
-            sizeX = random.randint(startX//2,2*startX)
-            sizeY = random.randint(startY//2,2*startY)
+            sizeX = random.randint(2*startX,4*startX)
+            sizeY = random.randint(2*startY,4*startY)
 
             self.lockedRegion(Point(x,y),Point(x+sizeX,y+sizeY))

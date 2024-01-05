@@ -34,14 +34,25 @@ class Ray:
         new_radius = self.__radius
 
         theta = self.getThetaByDir(player.getDir())
+        cosTheta = math.cos(theta)
+        sinTheta = math.sin(theta)
 
-        for r in range(self.__radius+1):
-            x = player.getX() + r * math.cos(theta)
-            y = player.getY() + r * math.sin(theta)
+        x = player.getX()
+        y = player.getY()
 
-            if x > zone[0].getX() and y > zone[0].getY():
-                if x < zone[1].getX() and y < zone[1].getY():
-                    return r-1
+        initX, initY = x, y
+
+        zone0X, zone0Y = zone[0].getX(), zone[0].getY()
+        zone1X, zone1Y = zone[1].getX(), zone[1].getY()
+
+        for _ in range(1,self.__radius+1,5):
+            x += 5 * cosTheta
+            y += 5 * sinTheta
+
+            if x > zone0X and y > zone0Y:
+                if x < zone1X and y < zone1Y:
+                    return math.sqrt((initX - x)**2 + (initY-y)**2)
+                
         return new_radius
     
     def completeRay(self,player,radius):
