@@ -1,7 +1,11 @@
 from logic.structure import *
+from logic.player import *
 from logic.game import *
 
-displayX,displayY,rays,lockedRegions = 700,700,30,30
+displayX,displayY = 700,700
+rays = 30
+lockedRegions = 80
+
 game = Game(displayX,displayY,rays,lockedRegions)
 
 while True:
