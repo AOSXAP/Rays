@@ -63,4 +63,16 @@ class Player:
                         return True
                                 
         return False
+    
+    def canMove(self, map):
+        mapGrid = map.getGrid()
+
+        for radius in range(-self.__size//2,self.__size//2):
+            if mapGrid[int(self.__x)+radius][int(self.__y)] == 1:
+                return False
+            
+            if mapGrid[int(self.__x)][int(self.__y)+radius] == 1:
+                return False
+            
+        return True
 

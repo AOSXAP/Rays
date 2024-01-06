@@ -38,18 +38,11 @@ class Ray:
             theta -= math.pi/2
 
         return theta
-
-    def intersectsZone(self, x,y, zone0X,zone0Y,zone1X,zone1Y):
-        if x > zone0X and y > zone0Y:
-            if x < zone1X and y < zone1Y:
-                return True
-                
-        return False
         
-    def resizeRay(self, zone: [Point,Point], player) -> float:
+    def resizeRay(self, player, map) -> float:
         '''
         Description: Resizes a ray by checking if it hits any locked regions and reducing its radius(if that's the case)
-        Input: [Point,Point], Player
+        Input: Player, Map
         Output: float
         '''
         new_radius = self.__radius
@@ -63,16 +56,21 @@ class Ray:
 
         initX, initY = x, y
 
-        zone0X, zone0Y = zone[0].getX(), zone[0].getY()
-        zone1X, zone1Y = zone[1].getX(), zone[1].getY()
+        mapGrid = map.getGrid()
 
-        step = 4
+        step = 3
 
         for _ in range(1,self.__radius+1,step):
             x += step * cosTheta
             y += step * sinTheta
 
-            if self.intersectsZone(x,y,zone0X,zone0Y,zone1X,zone1Y):
+            if x > map.getPx() or y > map.getPy():
+                break
+
+            if x < 0 or y < 0:
+                break
+
+            if mapGrid[int(x)][int(y)] == 1:
                 return math.sqrt((initX - x)**2 + (initY-y)**2)
                 
         return new_radius

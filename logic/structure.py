@@ -9,10 +9,29 @@ class Map:
         self.__py = py
         self.__win = win
 
+        self.__grid = []
+        self.__initGrid()
+
         self.__padding = 20
         self.lockedZones = []
 
         self.buildBorders()
+
+    def getPx(self):
+        return self.__px
+    
+    def getPy(self):
+        return self.__py
+
+    def getGrid(self):
+        return self.__grid
+    
+    def __initGrid(self):
+        for x in range(self.__px):
+            self.__grid.append([])
+
+            for _ in range(self.__py):
+                self.__grid[x].append(0)
 
     def buildBorders(self) -> None:
         #Description: Builds initial map borders based on the map padding
@@ -41,6 +60,10 @@ class Map:
             border.setFill(random.choice(self.structureColors))
         else:
             border.setFill(color)
+
+        for x in range(int(StartPoint.getX()),min(int(EndPoint.getX()),self.__px)):
+            for y in range(int(StartPoint.getY()),min(int(EndPoint.getY()),self.__py)):
+                self.__grid[x][y] = 1
 
         border.draw(self.__win)
 

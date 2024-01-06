@@ -4,7 +4,7 @@ from logic.structure import Map
 import math
 
 class Game():
-    def __init__(self, px:int, py:int,rays:int,lockedRegion:int) -> None:
+    def __init__(self, px:int, py:int,rays:int, raySize:int, lockedRegion:int) -> None:
         self.__win = GraphWin("Rays", px, py)
         self.__map = Map(self.__win,px,py)
         self.player = Player()
@@ -12,7 +12,7 @@ class Game():
         self.__map.buildRandomMap(lockedRegion)
 
         for k in range(rays):
-            self.player.addRay(k*math.pi/(2*rays)-math.pi/4,500)
+            self.player.addRay(k*math.pi/(2*rays)-math.pi/4,raySize)
 
 
     def getKey(self):
@@ -37,11 +37,10 @@ class Game():
             self.player.setY(self.player.coords().y + 10)
             direct = 2
 
-        for zone in self.__map.lockedZones:
-            if self.player.intersects(zone):
-                self.player.set_coords(prevPos)
-                ok = False
-                break
+
+        if not self.player.canMove(self.__map):
+            self.player.set_coords(prevPos)
+            ok = False
         
         if ok:
             self.player.setDir(direct)
@@ -53,19 +52,8 @@ class Game():
         
         for ray in self.player.getRays():
             new_radius = ray.getRadius()
-            
-            for zone in self.__map.lockedZones:
-                normalizedRadius = new_radius
 
-                if self.player.getDir() == 1 and self.player.getX() < zone[1].getX():
-                    normalizedRadius = ray.resizeRay(zone,self.player)
-                if self.player.getDir() == 2 and self.player.getY() < zone[1].getY():
-                    normalizedRadius = ray.resizeRay(zone,self.player)
-                if self.player.getDir() == 3 and self.player.getX() > zone[0].getX():
-                    normalizedRadius = ray.resizeRay(zone,self.player)
-                if self.player.getDir() == 4 and self.player.getY() > zone[0].getY():
-                    normalizedRadius = ray.resizeRay(zone,self.player)
-                new_radius = min(normalizedRadius,new_radius)
+            new_radius = min(ray.resizeRay(self.player,self.__map),ray.getRadius())
 
             completeRay = ray.completeRay(self.player,new_radius)
             self.player.rayRepo.append(completeRay)

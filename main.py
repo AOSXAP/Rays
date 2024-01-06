@@ -2,11 +2,14 @@ from logic.structure import *
 from logic.player import *
 from logic.game import *
 
-displayX,displayY = 700,700
-rays = 30
-lockedRegions = 80
+displayX,displayY = 1000,700
 
-game = Game(displayX,displayY,rays,lockedRegions)
+rays = 50
+raySize = 600
+
+lockedRegions = 50
+
+game = Game(displayX,displayY,rays,raySize,lockedRegions)
 
 while True:
     key = game.getKey()
