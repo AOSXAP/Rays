@@ -53,6 +53,9 @@ class Player:
         self.__rays.append(ray)
 
     def intersects(self,zone):
+        '''
+        Description: checks if player is in a zone
+        '''
         for i in [-1,1]:
             for j in [-1,1]:
                 if self.__x + i * self.__size > zone[0].getX() and self.__y + j * self.__size > zone[0].getY():
